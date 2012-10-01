@@ -1,0 +1,175 @@
+#
+# For a description of the syntax of this configuration file,
+# see scripts/kbuild/config-language.txt.
+#
+
+mainmenu "Open Switch Solution"
+
+choice
+	prompt "Platform"
+	default PLATFORM_LINUX
+	help
+	  There are 3 Platforms currently we support:
+	  - Linux simulation: Simulates Open Switch On Linux.
+	  - Linux: Run Linux as a router
+	  - Atomthreads: Under Development
+
+config PLATFORM_SIM_LINUX
+	bool "Linux simulation"
+
+config SIM_VIRTUAL_LINK_MGR
+	bool "Virtual link mgr"
+	default y
+	depends on PLATFORM_SIM_LINUX
+	help
+	  Compiles virtual link manager.
+
+config PLATFORM_LINUX
+	bool "Linux"
+
+config PLATFORM_ATOMTHREADS
+	bool "Atomthreads"
+
+endchoice
+
+menu 'Layer 2 Config'
+
+config BRIDGE_FDB
+	bool "Enable FDB"
+	default y
+	help
+	  Enables Bridge 
+
+config STP
+	bool "Enable Spanning Tree"
+	default y
+	depends on BRIDGE_FDB
+	help
+	   Say Y here if you want STP to be enabled
+
+config RSTP
+	bool "Enable Rapid Spanning Tree"
+	default y
+	help
+	   Say Y here if you want RSTP to be enabled
+
+config LINUX_STP
+	bool "Enable Linux Spanning Tree"
+	default y
+	depends on PLATFORM_LINUX
+	help
+	   Say Y here if you want Linux STP to be enabled
+
+endmenu
+
+menu 'Layer 3 Config'
+
+config ZEBRA_RTM
+	bool "Zebra RTM"
+	default y
+	help
+	  Enables Zebra RTM
+endmenu
+
+menu 'TCP/IP Layer'
+choice
+	prompt "TCP/IP "
+	default OPENSWITCH_TCP_IP
+	help
+	  There are 2 types
+	  - OPEN Switch TCPIP : It is a clone/copy of LWIP
+	  - OS TCP/IP : Not Supoorted
+
+config OPENSWITCH_TCP_IP
+	bool "Open Switch TCP/IP (LWIP)"
+config OS_TCP_IP
+	bool "Operating System  TCP/IP stack"
+endchoice
+
+endmenu
+
+menu 'Application Layer'
+
+config TELNET
+	bool "Telnet client/server"
+	default y
+	help
+	  This Enables telnet client and server in your Switch
+
+config TRACE_ROUTE
+	bool "Traceroute"
+	default y
+	help
+	   Say Y here if you want traceroute to be enabled
+
+config DHCP_SERVER
+	bool "DHCP Server"
+	default y
+	help
+	   Say Y here if you want DHCP server to be enabled
+
+config SNTP_CLIENT
+	bool "SNTP Client"
+	default y
+	help
+	   Say Y here if you want SNTP Client to be enabled
+endmenu
+
+
+menu 'System Config'
+choice
+	prompt "Timers"
+	default LIGHT_WEIGHT_TIMERS
+	help
+	  There are 3 Timers currently we support:
+	  - Generic timers : We most efficient but resource consuming.
+	  - Light weight timers: Light weight timers consumes less memory
+	  - OS Timers : Not Supoorted
+
+config GEN_TIMERS
+	bool "Generic Timers"
+
+config LIGHT_WEIGHT_TIMERS
+	bool "Light weight Timers"
+endchoice
+
+config MAX_PHY_PORTS
+	int "Maximux Physical Ports"
+	default 6
+	help
+	   Enter Maximum Physical Ports
+endmenu
+
+
+menu 'Debugging Options'
+
+config DEBUG
+	bool "Build with extra Debugging symbols"
+	default y
+	help
+	  Say Y here if you wish to examine Open Switch Solution internals while
+	  running. This increases the size of the binary considerably, and
+	  should only be used when doing development. If you are doing
+	  development and want to debug it, answer Y.
+
+	  Most people should answer N.
+
+config DEBUG_PESSIMIZE
+	bool "Disable compiler optimizations"
+	default y
+	depends on DEBUG
+	help
+	  The compiler's optimization of source code can eliminate and reorder
+	  code, resulting in an executable that's hard to understand when
+	  stepping through it with a debugger. This switches it off, resulting
+	  in a much bigger executable that more closely matches the source
+	  code.
+
+config WERROR
+	bool "Abort compilation on any warning"
+	default n
+	help
+	  Selecting this will add -Werror to gcc command line.
+
+	  Most people should answer N.
+endmenu

@@ -1,0 +1,15 @@
+//Clears the screen
+clear screen
+
+//Locks the Console
+lock
+
+//logout from current session
+logout
+
+// Enable privileged mode
+enable privileged-mode
+
+// Run the configuration script
+run-script <STRING:filename>
+

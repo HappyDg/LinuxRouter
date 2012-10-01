@@ -1,0 +1,11 @@
+//Enable DHCP client debugging
+debug dhcp client
+
+//Disable DHCP client debugging
+no debug dhcp client
+
+//Debug memory pool allocation
+debug mem-pool { <INT:poolid> }
+
+//No Debug memory pool allocation
+no debug mem-pool { <INT:poolid> }
