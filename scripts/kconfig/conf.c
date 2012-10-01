@@ -551,7 +551,7 @@ int main(int ac, char **av)
 	case ask_silent:
 		if (stat(".config", &tmpstat)) {
 			printf(_("***\n"
-				"*** You have not yet configured Open Switch Solution!\n"
+				"*** You have not yet configured Linux Router!\n"
 				"***\n"
 				"*** Please run some configurator (e.g. \"make oldconfig\" or\n"
 				"*** \"make menuconfig\" or \"make defconfig\").\n"

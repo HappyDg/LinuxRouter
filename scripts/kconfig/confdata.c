@@ -384,7 +384,7 @@ int conf_write(const char *name)
 
 	fprintf(out, _("#\n"
 		       "# Automatically generated make config: don't edit\n"
-		       "# Open Switch Solution version: %s\n"
+		       "# Linux Router version: %s\n"
 		       "%s%s"
 		       "#\n"),
 		     sym_get_string_value(sym),
@@ -410,7 +410,7 @@ int conf_write(const char *name)
 		}
 		fprintf(out_h, "/*\n"
 			       " * Automatically generated C config: don't edit\n"
-			       " * Open Switch Solution version: %s\n"
+			       " * Linux Router version: %s\n"
 			       " */\n"
 			       "%s"
 			       "\n",

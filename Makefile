@@ -2,7 +2,7 @@ VERSION = 0
 PATCHLEVEL = 1
 SUBLEVEL = 0
 EXTRAVERSION =
-NAME = Layer3Switch
+NAME = LinuxRouter
 
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
@@ -20,7 +20,7 @@ MAKEFLAGS += --no-print-directory
 # their own directory. If in some directory we have a dependency on
 # a file in another dir (which doesn't happen often, but it's often
 # unavoidable when linking the built-in.o targets which finally
-# turn into OpenSwitchSolution), we will call a sub make in that other dir, and
+# turn into LinuxRouter), we will call a sub make in that other dir, and
 # after that we are sure that everything which is in that other dir
 # is now up to date.
 #
@@ -317,8 +317,8 @@ AFLAGS_KERNEL	=
 # Use LINUXINCLUDE when you must reference the include/ directory.
 # Needed to be compatible with the O= option
 CFLAGS		:= $(CFLAGS) $(INCLUDE)
-# Added only to final link stage of OpenSwitchSolution binary
-CFLAGS_OpenSwitchSolution	:= $(CFLAGS_OpenSwitchSolution)
+# Added only to final link stage of LinuxRouter binary
+CFLAGS_LinuxRouter	:= $(CFLAGS_LinuxRouter)
 CPPFLAGS	:= $(CPPFLAGS)
 AFLAGS		:= $(AFLAGS)
 LDFLAGS		:= $(LDFLAGS)
@@ -446,7 +446,7 @@ config: scripts_basic outputmakefile gen_build_files FORCE
 
 else
 # ===========================================================================
-# Build targets only - this includes OpenSwitchSolution, arch specific targets, clean
+# Build targets only - this includes LinuxRouter, arch specific targets, clean
 # targets and others. In general all targets except *config targets.
 
 ifeq ($(KBUILD_EXTMOD),)
@@ -459,7 +459,7 @@ scripts: gen_build_files scripts_basic include/config/MARKER
 
 scripts_basic: include/autoconf.h
 
-# Objects we will link into OpenSwitchSolution / subdirs we need to visit
+# Objects we will link into LinuxRouter / subdirs we need to visit
 core-y		:= \
 		src/ \
 
@@ -499,8 +499,8 @@ endif
 # The all: target is the default when no target is given on the
 # command line.
 # This allow a user to issue only 'make' to build a kernel including modules
-# Defaults OpenSwitchSolution but it is usually overridden in the arch makefile
-all: OpenSwitchSolution doc
+# Defaults LinuxRouter but it is usually overridden in the arch makefile
+all: LinuxRouter doc
 
 -include $(srctree)/arch/$(ARCH)/Makefile
 
@@ -513,7 +513,7 @@ CHECKFLAGS += $(NOSTDINC_FLAGS)
 # set in the environment
 # Also any assignments in arch/$(ARCH)/Makefile take precedence over
 # this default value
-export KBUILD_IMAGE ?= OpenSwitchSolution
+export KBUILD_IMAGE ?= LinuxRouter
 
 #
 # INSTALL_PATH specifies where to place the updated kernel and system map
@@ -531,9 +531,9 @@ export MODLIB
 
 
 ifeq ($(KBUILD_EXTMOD),)
-OpenSwitchSolution-dirs	:= $(patsubst %/,%,$(filter %/, $(core-y) $(core-m) $(libs-y) $(libs-m)))
+LinuxRouter-dirs	:= $(patsubst %/,%,$(filter %/, $(core-y) $(core-m) $(libs-y) $(libs-m)))
 
-OpenSwitchSolution-alldirs	:= $(sort $(OpenSwitchSolution-dirs) $(patsubst %/,%,$(filter %/, \
+LinuxRouter-alldirs	:= $(sort $(LinuxRouter-dirs) $(patsubst %/,%,$(filter %/, \
 		     $(core-n) $(core-) $(libs-n) $(libs-) \
 		)))
 
@@ -542,42 +542,42 @@ libs-y1		:= $(patsubst %/, %/lib.a, $(libs-y))
 libs-y2		:= $(patsubst %/, %/built-in.o, $(libs-y))
 libs-y		:= $(libs-y1) $(libs-y2)
 
-# Build OpenSwitchSolution
+# Build LinuxRouter
 # ---------------------------------------------------------------------------
-# OpenSwitchSolution is build from the objects selected by $(OpenSwitchSolution-init) and
-# $(OpenSwitchSolution-main). Most are built-in.o files from top-level directories
+# LinuxRouter is build from the objects selected by $(LinuxRouter-init) and
+# $(LinuxRouter-main). Most are built-in.o files from top-level directories
 # in the kernel tree, others are specified in arch/$(ARCH)Makefile.
-# Ordering when linking is important, and $(OpenSwitchSolution-init) must be first.
+# Ordering when linking is important, and $(LinuxRouter-init) must be first.
 #
-# OpenSwitchSolution
+# LinuxRouter
 #   ^
 #   |
-#   +-< $(OpenSwitchSolution-init)
+#   +-< $(LinuxRouter-init)
 #   |   +--< init/version.o + more
 #   |
-#   +--< $(OpenSwitchSolution-main)
+#   +--< $(LinuxRouter-main)
 #   |    +--< driver/built-in.o mm/built-in.o + more
 #   |
 #   +-< kallsyms.o (see description in CONFIG_KALLSYMS section)
 #
-# OpenSwitchSolution version (uname -v) cannot be updated during normal
+# LinuxRouter version (uname -v) cannot be updated during normal
 # descending-into-subdirs phase since we do not yet know if we need to
-# update OpenSwitchSolution.
-# Therefore this step is delayed until just before final link of OpenSwitchSolution -
+# update LinuxRouter.
+# Therefore this step is delayed until just before final link of LinuxRouter -
 # except in the kallsyms case where it is done just before adding the
 # symbols to the kernel.
 #
 # System.map is generated to document addresses of all kernel symbols
 
-OpenSwitchSolution-all  := $(core-y) $(libs-y)
+LinuxRouter-all  := $(core-y) $(libs-y)
 
-# Rule to link OpenSwitchSolution - also used during CONFIG_KALLSYMS
+# Rule to link LinuxRouter - also used during CONFIG_KALLSYMS
 # May be overridden by arch/$(ARCH)/Makefile
-quiet_cmd_OpenSwitchSolution__ ?= LINK    $@
-      cmd_OpenSwitchSolution__ ?= $(srctree)/scripts/trylink \
-      "Switch_unstripped" \
+quiet_cmd_LinuxRouter__ ?= LINK    $@
+      cmd_LinuxRouter__ ?= $(srctree)/scripts/trylink \
+      "LinuxRouter_S" \
       "$(CC)" \
-      "$(CFLAGS) $(CFLAGS_OpenSwitchSolution)" \
+      "$(CFLAGS) $(CFLAGS_LinuxRouter)" \
       "$(LDFLAGS) $(EXTRA_LDFLAGS)" \
       "$(core-y)" \
       "$(libs-y)" \
@@ -587,33 +587,33 @@ quiet_cmd_OpenSwitchSolution__ ?= LINK    $@
 quiet_cmd_sysmap = SYSMAP
       cmd_sysmap = $(CONFIG_SHELL) $(srctree)/scripts/mksysmap
 
-# Link of OpenSwitchSolution
+# Link of LinuxRouter
 # If CONFIG_KALLSYMS is set .version is already updated
 # Generate System.map and verify that the content is consistent
-# Use + in front of the OpenSwitchSolution_version rule to silent warning with make -j2
+# Use + in front of the LinuxRouter_version rule to silent warning with make -j2
 # First command is ':' to allow us to use + in front of the rule
-define rule_OpenSwitchSolution__
+define rule_LinuxRouter__
 	:
-	$(call cmd,OpenSwitchSolution__)
-	$(Q)echo 'cmd_$@ := $(cmd_OpenSwitchSolution__)' > $(@D)/.$(@F).cmd
+	$(call cmd,LinuxRouter__)
+	$(Q)echo 'cmd_$@ := $(cmd_LinuxRouter__)' > $(@D)/.$(@F).cmd
 endef
 
 
 ifdef CONFIG_KALLSYMS
-# Generate section listing all symbols and add it into OpenSwitchSolution $(kallsyms.o)
+# Generate section listing all symbols and add it into LinuxRouter $(kallsyms.o)
 # It's a three stage process:
-# o .tmp_OpenSwitchSolution1 has all symbols and sections, but __kallsyms is
+# o .tmp_LinuxRouter1 has all symbols and sections, but __kallsyms is
 #   empty
 #   Running kallsyms on that gives us .tmp_kallsyms1.o with
-#   the right size - OpenSwitchSolution version (uname -v) is updated during this step
-# o .tmp_OpenSwitchSolution2 now has a __kallsyms section of the right size,
+#   the right size - LinuxRouter version (uname -v) is updated during this step
+# o .tmp_LinuxRouter2 now has a __kallsyms section of the right size,
 #   but due to the added section, some addresses have shifted.
 #   From here, we generate a correct .tmp_kallsyms2.o
-# o The correct .tmp_kallsyms2.o is linked into the final OpenSwitchSolution.
-# o Verify that the System.map from OpenSwitchSolution matches the map from
-#   .tmp_OpenSwitchSolution2, just in case we did not generate kallsyms correctly.
+# o The correct .tmp_kallsyms2.o is linked into the final LinuxRouter.
+# o Verify that the System.map from LinuxRouter matches the map from
+#   .tmp_LinuxRouter2, just in case we did not generate kallsyms correctly.
 # o If CONFIG_KALLSYMS_EXTRA_PASS is set, do an extra pass using
-#   .tmp_OpenSwitchSolution3 and .tmp_kallsyms3.o.  This is only meant as a
+#   .tmp_LinuxRouter3 and .tmp_kallsyms3.o.  This is only meant as a
 #   temporary bypass to allow the kernel to be built while the
 #   maintainers work out what went wrong with kallsyms.
 
@@ -628,22 +628,22 @@ kallsyms.o := .tmp_kallsyms$(last_kallsyms).o
 define verify_kallsyms
 	$(Q)$(if $($(quiet)cmd_sysmap),                       \
 	  echo '  $($(quiet)cmd_sysmap) .tmp_System.map' &&)  \
-	  $(cmd_sysmap) .tmp_OpenSwitchSolution$(last_kallsyms) .tmp_System.map
+	  $(cmd_sysmap) .tmp_LinuxRouter$(last_kallsyms) .tmp_System.map
 	$(Q)cmp -s System.map .tmp_System.map ||              \
 		(echo Inconsistent kallsyms data;             \
 		 echo Try setting CONFIG_KALLSYMS_EXTRA_PASS; \
 		 rm .tmp_kallsyms* ; /bin/false )
 endef
 
-# Update OpenSwitchSolution version before link
+# Update LinuxRouter version before link
 # Use + in front of this rule to silent warning about make -j1
 # First command is ':' to allow us to use + in front of this rule
-cmd_ksym_ld = $(cmd_OpenSwitchSolution__)
+cmd_ksym_ld = $(cmd_LinuxRouter__)
 define rule_ksym_ld
 	:
-	+$(call cmd,OpenSwitchSolution_version)
-	$(call cmd,OpenSwitchSolution__)
-	$(Q)echo 'cmd_$@ := $(cmd_OpenSwitchSolution__)' > $(@D)/.$(@F).cmd
+	+$(call cmd,LinuxRouter_version)
+	$(call cmd,LinuxRouter__)
+	$(Q)echo 'cmd_$@ := $(cmd_LinuxRouter__)' > $(@D)/.$(@F).cmd
 endef
 
 # Generate .S file with all kernel symbols
@@ -654,18 +654,18 @@ quiet_cmd_kallsyms = KSYM    $@
 .tmp_kallsyms1.o .tmp_kallsyms2.o .tmp_kallsyms3.o: %.o: %.S scripts FORCE
 	$(call if_changed_dep,as_o_S)
 
-.tmp_kallsyms%.S: .tmp_OpenSwitchSolution% $(KALLSYMS)
+.tmp_kallsyms%.S: .tmp_LinuxRouter% $(KALLSYMS)
 	$(call cmd,kallsyms)
 
-# .tmp_OpenSwitchSolution1 must be complete except kallsyms, so update OpenSwitchSolution version
-.tmp_OpenSwitchSolution1: $(OpenSwitchSolution-lds) $(OpenSwitchSolution-all) FORCE
+# .tmp_LinuxRouter1 must be complete except kallsyms, so update LinuxRouter version
+.tmp_LinuxRouter1: $(LinuxRouter-lds) $(LinuxRouter-all) FORCE
 	$(call if_changed_rule,ksym_ld)
 
-.tmp_OpenSwitchSolution2: $(OpenSwitchSolution-lds) $(OpenSwitchSolution-all) .tmp_kallsyms1.o FORCE
-	$(call if_changed,OpenSwitchSolution__)
+.tmp_LinuxRouter2: $(LinuxRouter-lds) $(LinuxRouter-all) .tmp_kallsyms1.o FORCE
+	$(call if_changed,LinuxRouter__)
 
-.tmp_OpenSwitchSolution3: $(OpenSwitchSolution-lds) $(OpenSwitchSolution-all) .tmp_kallsyms2.o FORCE
-	$(call if_changed,OpenSwitchSolution__)
+.tmp_LinuxRouter3: $(LinuxRouter-lds) $(LinuxRouter-all) .tmp_kallsyms2.o FORCE
+	$(call if_changed,LinuxRouter__)
 
 # Needs to visit scripts/ before $(KALLSYMS) can be used.
 $(KALLSYMS): scripts ;
@@ -673,7 +673,7 @@ $(KALLSYMS): scripts ;
 # Generate some data for debugging strange kallsyms problems
 debug_kallsyms: .tmp_map$(last_kallsyms)
 
-.tmp_map%: .tmp_OpenSwitchSolution% FORCE
+.tmp_map%: .tmp_LinuxRouter% FORCE
 	($(OBJDUMP) -h $< | $(AWK) '/^ +[0-9]/{print $$4 " 0 " $$2}'; $(NM) $<) | sort > $@
 
 .tmp_map3: .tmp_map2
@@ -682,33 +682,33 @@ debug_kallsyms: .tmp_map$(last_kallsyms)
 
 endif # ifdef CONFIG_KALLSYMS
 
-# OpenSwitchSolution image - including updated kernel symbols
-Switch_unstripped: $(OpenSwitchSolution-all) FORCE
-	$(call if_changed_rule,OpenSwitchSolution__)
+# LinuxRouter image - including updated kernel symbols
+LinuxRouter_S: $(LinuxRouter-all) FORCE
+	$(call if_changed_rule,LinuxRouter__)
 	$(Q)rm -f .old_version
 
-OpenSwitchSolution: Switch_unstripped
+LinuxRouter: LinuxRouter_S
 ifeq ($(SKIP_STRIP),y)
 	$(Q)cp $< $@
 else
 	$(Q)$(STRIP) -s --remove-section=.note --remove-section=.comment \
-		Switch_unstripped -o Switch
+		LinuxRouter_S -o LinuxRouter
 # strip is confused by PIE executable and does not set exec bits
-	$(Q)chmod a+x Switch
+	$(Q)chmod a+x LinuxRouter
 endif
 
 # The actual objects are generated when descending,
 # make sure no implicit rule kicks in
-$(sort $(OpenSwitchSolution-all)): $(OpenSwitchSolution-dirs) ;
+$(sort $(LinuxRouter-all)): $(LinuxRouter-dirs) ;
 
-# Handle descending into subdirectories listed in $(OpenSwitchSolution-dirs)
+# Handle descending into subdirectories listed in $(LinuxRouter-dirs)
 # Preset locale variables to speed up the build process. Limit locale
 # tweaks to this spot to avoid wrong language settings when running
 # make menuconfig etc.
 # Error messages still appears in the original language
 
-PHONY += $(OpenSwitchSolution-dirs)
-$(OpenSwitchSolution-dirs): prepare scripts PARSE_TREE
+PHONY += $(LinuxRouter-dirs)
+$(LinuxRouter-dirs): prepare scripts PARSE_TREE
 	$(Q)$(MAKE) $(build)=$@
 
 # Build the kernel release string
@@ -771,7 +771,7 @@ PHONY += prepare-all
 # 2) Create the include2 directory, used for the second asm symlink
 prepare3: .kernelrelease
 ifneq ($(KBUILD_SRC),)
-	@echo '  Using $(srctree) as source for OpenSwitchSolution'
+	@echo '  Using $(srctree) as source for LinuxRouter'
 	$(Q)if [ -f $(srctree)/.config ]; then \
 		echo "  $(srctree) is not clean, please run 'make mrproper'";\
 		echo "  in the '$(srctree)' directory.";\
@@ -798,10 +798,10 @@ prepare0: archprepare FORCE
 # All the preparing..
 prepare prepare-all: prepare0
 
-#	Leave this as default for preprocessing OpenSwitchSolution.lds.S, which is now
+#	Leave this as default for preprocessing LinuxRouter.lds.S, which is now
 #	done in arch/$(ARCH)/kernel/Makefile
 
-export CPPFLAGS_OpenSwitchSolution.lds += -P -C -U$(ARCH)
+export CPPFLAGS_LinuxRouter.lds += -P -C -U$(ARCH)
 
 # 	FIXME: The asm symlink changes when $(ARCH) changes. That's
 #	hard to detect, but I suppose "make mrproper" is a good idea
@@ -860,7 +860,7 @@ all: modules
 #	Build modules
 
 PHONY += modules
-modules: $(OpenSwitchSolution-dirs) $(if $(KBUILD_BUILTIN),OpenSwitchSolution)
+modules: $(LinuxRouter-dirs) $(if $(KBUILD_BUILTIN),LinuxRouter)
 	@echo '  Building modules, stage 2.';
 	$(Q)$(MAKE) -rR -f $(srctree)/scripts/Makefile.modpost
 
@@ -892,7 +892,7 @@ _modinst_:
 
 # If System.map exists, run depmod.  This deliberately does not have a
 # dependency on System.map since that would run the dependency tree on
-# OpenSwitchSolution.  This depmod is only for convenience to give the initial
+# LinuxRouter.  This depmod is only for convenience to give the initial
 # boot a modules.dep even before / is mounted read-write.  However the
 # boot script depmod is the master version.
 ifeq "$(strip $(INSTALL_MOD_PATH))" ""
@@ -911,7 +911,7 @@ else # CONFIG_MODULES
 
 modules modules_install: FORCE
 	@echo
-	@echo "The present OpenSwitchSolution configuration has modules disabled."
+	@echo "The present LinuxRouter configuration has modules disabled."
 	@echo "Type 'make config' and enable loadable module support."
 	@echo "Then build a kernel with module support enabled."
 	@echo
@@ -928,9 +928,9 @@ endif # CONFIG_MODULES
 
 # Directories & files removed with 'make clean'
 CLEAN_DIRS  += $(MODVERDIR) _install 0_lib
-CLEAN_FILES +=	Switch Switch_unstripped* Switch.links \
+CLEAN_FILES +=	LinuxRouter LinuxRouter_S* Switch.links \
                 System.map .kernelrelease \
-                .tmp_kallsyms* .tmp_version .tmp_OpenSwitchSolution* .tmp_System.map
+                .tmp_kallsyms* .tmp_version .tmp_LinuxRouter* .tmp_System.map
 
 # Directories & files removed with 'make mrproper'
 MRPROPER_DIRS  += include/config include2
@@ -945,13 +945,13 @@ MRPROPER_FILES += .config .config.old include/asm .version .old_version \
 		  include/usage.h \
 		  applets/usage \
 		  .kernelrelease Module.symvers tags TAGS cscope* \
-		  OpenSwitchSolution_old
+		  LinuxRouter_old
 
 # clean - Delete most, but leave enough to build external modules
 #
 clean: rm-dirs  := $(CLEAN_DIRS)
 clean: rm-files := $(CLEAN_FILES)
-clean-dirs      := $(addprefix _clean_,$(srctree) $(OpenSwitchSolution-alldirs))
+clean-dirs      := $(addprefix _clean_,$(srctree) $(LinuxRouter-alldirs))
 
 PHONY += $(clean-dirs) clean archclean
 $(clean-dirs):
@@ -966,8 +966,8 @@ clean: archclean $(clean-dirs)
 		-type f -print | xargs rm -f
 
 PHONY += doc-clean
-doc-clean: rm-files := docs/OpenSwitchSolution.pod \
-		  docs/BusyBox.html docs/OpenSwitchSolution.1 docs/BusyBox.txt
+doc-clean: rm-files := docs/LinuxRouter.pod \
+		  docs/BusyBox.html docs/LinuxRouter.1 docs/BusyBox.txt
 doc-clean:
 	$(call cmd,rmfiles)
 
@@ -1215,7 +1215,7 @@ endif #ifeq ($(mixed-targets),1)
 
 PHONY += checkstack
 checkstack:
-	$(OBJDUMP) -d OpenSwitchSolution $$(find . -name '*.ko') | \
+	$(OBJDUMP) -d LinuxRouter $$(find . -name '*.ko') | \
 	$(PERL) $(src)/scripts/checkstack.pl $(ARCH)
 
 kernelrelease:
