@@ -220,8 +220,6 @@ static int if_readlist_proc(char *target)
 	while (fgets(buf, sizeof buf, fh)) {
 		char *s, name[IFNAMSIZ];
 		s = get_name(name, buf);
-		if (!strncmp (name, "lo", strlen ("lo"))) /*Dont read linux lo interface*/
-			continue; 
 		ife = add_if_info(name);
 		idx++;
 		if (target && !strcmp(target,name))
