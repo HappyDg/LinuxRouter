@@ -123,8 +123,6 @@ static if_t *add_if_info(char *name)
 
     strncpy(IF_DESCR(idx + 1), name, IFNAMSIZ);
 
-    create_raw_sock (name);
-
     fetch_and_update_if_info (IF_INFO(idx + 1));
 
     return IF_INFO(idx + 1);

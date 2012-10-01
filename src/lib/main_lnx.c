@@ -58,8 +58,6 @@ void execute_system_call (char *arg)
 int main (int argc, char **argv)
 {
 
-	create_raw_sock_for_pkt_capture ();
-
 	mcore_init ();
 
         lib_init ();
