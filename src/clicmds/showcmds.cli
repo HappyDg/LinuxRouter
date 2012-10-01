@@ -1,47 +1,7 @@
 //Displays user info
 show users
 
-//Displays the memory pool
-show mem-pool
-
-//Displays the ARP mapping
-show arp
-
-//Displays the CPU usage of the task
-show task-cpu
-
-//Display MAC table
-show mac-address-table
-
-//shows Spanning Tree
-show spanning-tree
-
-//shows Rapid spanning Tree
-show rstp 
-
 //Displays interface
 show interface
 
-//Displays IP Information
-show ip interface
 
-//Displays IP Information
-show ip route
-
-//Displays DNS name server
-show ip dns
-
-//Displays the DHCP addresses leased from a server.
-show dhcp-client lease 
-
-//Displays a list of all bindings created on a specific DHCP Server
-show ip dhcp binding { <IPV4ADDR:address> }
-
-//Displays count information about server statistics and messages sent and received
-show ip dhcp server statistics 
-
-//Deletes an automatic address binding from the DHCP database
-clear ip dhcp binding { <IPV4ADDR:address> }
-
-//Resets all DHCP Server counters to 0
-clear ip dhcp server statistics

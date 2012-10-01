@@ -1,4 +1,5 @@
 #include "src/clicmds/gen.cli"
+#include "src/clicmds/showcmds.cli"
 //configuration mode
 configure terminal
 

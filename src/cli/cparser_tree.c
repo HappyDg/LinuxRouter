@@ -53,6 +53,20 @@ cparser_glue_run_script_filename (cparser_t *parser)
 }
 
 cparser_result_t
+cparser_glue_show_users (cparser_t *parser)
+{
+    cparser_cmd_show_users(&parser->context);
+    return CPARSER_OK;
+}
+
+cparser_result_t
+cparser_glue_show_interface (cparser_t *parser)
+{
+    cparser_cmd_show_interface(&parser->context);
+    return CPARSER_OK;
+}
+
+cparser_result_t
 cparser_glue_configure_terminal (cparser_t *parser)
 {
     cparser_cmd_configure_terminal(&parser->context);
@@ -369,6 +383,51 @@ cparser_node_t cparser_node_configure = {
     &cparser_node_configure_terminal
 };
 
+cparser_node_t cparser_node_show_interface_eol = {
+    CPARSER_NODE_END,
+    0,
+    cparser_glue_show_interface,
+    "Displays interface",
+    NULL,
+    NULL
+};
+
+cparser_node_t cparser_node_show_interface = {
+    CPARSER_NODE_KEYWORD,
+    0,
+    "interface",
+    NULL,
+    NULL,
+    &cparser_node_show_interface_eol
+};
+
+cparser_node_t cparser_node_show_users_eol = {
+    CPARSER_NODE_END,
+    0,
+    cparser_glue_show_users,
+    "Displays user info",
+    NULL,
+    NULL
+};
+
+cparser_node_t cparser_node_show_users = {
+    CPARSER_NODE_KEYWORD,
+    0,
+    "users",
+    NULL,
+    &cparser_node_show_interface,
+    &cparser_node_show_users_eol
+};
+
+cparser_node_t cparser_node_show = {
+    CPARSER_NODE_KEYWORD,
+    0,
+    "show",
+    NULL,
+    &cparser_node_configure,
+    &cparser_node_show_users
+};
+
 cparser_node_t cparser_node_run_script_filename_eol = {
     CPARSER_NODE_END,
     0,
@@ -392,7 +451,7 @@ cparser_node_t cparser_node_run_script = {
     0,
     "run-script",
     NULL,
-    &cparser_node_configure,
+    &cparser_node_show,
     &cparser_node_run_script_filename
 };
 
