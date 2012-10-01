@@ -17,6 +17,7 @@ cparser_result_t cparser_glue_enable_privileged_mode (cparser_t *parser);
 cparser_result_t cparser_glue_run_script_filename (cparser_t *parser);
 cparser_result_t cparser_glue_show_users (cparser_t *parser);
 cparser_result_t cparser_glue_show_interface (cparser_t *parser);
+cparser_result_t cparser_glue_show_ip_interface (cparser_t *parser);
 cparser_result_t cparser_glue_configure_terminal (cparser_t *parser);
 cparser_result_t cparser_glue_config_set_hostname_hostname (cparser_t *parser);
 cparser_result_t cparser_glue_config_user_add_username_password_level (cparser_t *parser);
@@ -33,6 +34,7 @@ cparser_result_t cparser_cmd_run_script_filename(cparser_context_t *context,
     char **filename_ptr);
 cparser_result_t cparser_cmd_show_users(cparser_context_t *context);
 cparser_result_t cparser_cmd_show_interface(cparser_context_t *context);
+cparser_result_t cparser_cmd_show_ip_interface(cparser_context_t *context);
 cparser_result_t cparser_cmd_configure_terminal(cparser_context_t *context);
 cparser_result_t cparser_cmd_config_set_hostname_hostname(cparser_context_t *context,
     char **hostname_ptr);

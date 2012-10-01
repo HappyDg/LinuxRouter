@@ -4,4 +4,8 @@ show users
 //Displays interface
 show interface
 
+//Displays IP Information
+show ip interface
+
+
 

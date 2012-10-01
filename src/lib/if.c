@@ -271,8 +271,10 @@ int fetch_and_update_if_info (if_t *ife)
 
 		strncpy(ifr_tmp.ifr_name, ifname, sizeof(ifr.ifr_name));
 
+		ife->ip_addr.addr = sin->sin_addr.s_addr;
+
 		if (ioctl(fd, SIOCGIFNETMASK, &ifr_tmp) == 0) {
-			//ife->ipv4_netmask.s_addr = mask->sin_addr.s_addr;
+			ife->netmask.addr = mask->sin_addr.s_addr;
 			;
 		} 
 		//if (!set_ip_address (idx + 1, sin->sin_addr.s_addr,  mask->sin_addr.s_addr))

@@ -16,40 +16,6 @@
 #include "cparser_tree.h"
 #include "rtm.h"
 
-int ping_me (char *host);
-
-cparser_result_t cparser_cmd_if_ip_address_addr_mask(cparser_context_t *context UNUSED_PARAM,
-    uint32_t *addr_ptr,
-    uint32_t *mask_ptr)
-{
-	int port = cli_get_port ();
-
-	*addr_ptr = ntohl (*addr_ptr);
-	*mask_ptr = ntohl (*mask_ptr);
-
-	if (!set_ip_address (port, *addr_ptr, *mask_ptr))
-	{
-		connected_route_add (IF_INFO (port), addr_ptr, mask_ptr, 0);
-		return CPARSER_OK;
-	}
-	return CPARSER_NOT_OK;
-}
-
-cparser_result_t cparser_cmd_if_no_ip_address_addr_mask(cparser_context_t *context UNUSED_PARAM,
-    uint32_t *addr_ptr,
-    uint32_t *mask_ptr)
-{
-	int port = cli_get_port ();
-
-	*addr_ptr = ntohl (*addr_ptr);
-	*mask_ptr = ntohl (*mask_ptr);
-
-	if(!connected_route_delete (IF_INFO (port), addr_ptr, mask_ptr, 0))
-		return CPARSER_OK;
-  	return CPARSER_NOT_OK;
-}
-
-
 cparser_result_t cparser_cmd_show_ip_interface(cparser_context_t *context UNUSED_PARAM)
 {
 	int i = 1;
@@ -75,26 +41,5 @@ cparser_result_t cparser_cmd_show_ip_interface(cparser_context_t *context UNUSED
 		cli_printf("%u.%u.%u.%u\n", Mask[0], Mask[1],Mask[2],Mask[3]);
 		i++;
 	}	
-	return CPARSER_OK;
-}
-
-cparser_result_t cparser_cmd_ping_hostaddr(cparser_context_t *context UNUSED_PARAM, uint32_t *hostaddr_ptr)
-{
-        uint8_t  addr[4];
-        char  str[10];
-
-        uint32_2_ipstring (ntohl(*hostaddr_ptr), addr);
-
-        sprintf (str, "%d.%d.%d.%d", addr[0], addr[1], addr[2], addr[3]);
-
-	ping_me (str);
-
-	return CPARSER_OK;
-}
-
-cparser_result_t cparser_cmd_ping_hostname(cparser_context_t *context UNUSED_PARAM, char **hostname_ptr)
-{
-	ping_me (*hostname_ptr);
-
 	return CPARSER_OK;
 }

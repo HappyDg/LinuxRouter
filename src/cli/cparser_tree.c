@@ -67,6 +67,13 @@ cparser_glue_show_interface (cparser_t *parser)
 }
 
 cparser_result_t
+cparser_glue_show_ip_interface (cparser_t *parser)
+{
+    cparser_cmd_show_ip_interface(&parser->context);
+    return CPARSER_OK;
+}
+
+cparser_result_t
 cparser_glue_configure_terminal (cparser_t *parser)
 {
     cparser_cmd_configure_terminal(&parser->context);
@@ -383,6 +390,33 @@ cparser_node_t cparser_node_configure = {
     &cparser_node_configure_terminal
 };
 
+cparser_node_t cparser_node_show_ip_interface_eol = {
+    CPARSER_NODE_END,
+    0,
+    cparser_glue_show_ip_interface,
+    "Displays IP Information",
+    NULL,
+    NULL
+};
+
+cparser_node_t cparser_node_show_ip_interface = {
+    CPARSER_NODE_KEYWORD,
+    0,
+    "interface",
+    NULL,
+    NULL,
+    &cparser_node_show_ip_interface_eol
+};
+
+cparser_node_t cparser_node_show_ip = {
+    CPARSER_NODE_KEYWORD,
+    0,
+    "ip",
+    NULL,
+    NULL,
+    &cparser_node_show_ip_interface
+};
+
 cparser_node_t cparser_node_show_interface_eol = {
     CPARSER_NODE_END,
     0,
@@ -397,7 +431,7 @@ cparser_node_t cparser_node_show_interface = {
     0,
     "interface",
     NULL,
-    NULL,
+    &cparser_node_show_ip,
     &cparser_node_show_interface_eol
 };
 
