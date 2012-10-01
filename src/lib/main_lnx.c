@@ -35,7 +35,7 @@ int create_raw_sock_for_pkt_capture (void);
 void layer3switch_init (void);
 int spawn_pkt_processing_task (void);
 
-char switch_mac[6] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x00};
+char switch_mac[6] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05};
 
 void dump_task_info (void);
 void execute_system_call (char *arg);
@@ -57,12 +57,6 @@ void execute_system_call (char *arg)
 
 int main (int argc, char **argv)
 {
-	if (argc < 2) {
-		fprintf (stderr, "Usage : ./switch <instance>\n");
-		return -1;
-	}
-
-	switch_mac[5] = atoi (argv[1]);
 
 	create_raw_sock_for_pkt_capture ();
 
