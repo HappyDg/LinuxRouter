@@ -66,7 +66,7 @@ int main (int argc, char **argv)
 
 	mem_init ();
 
-        cli_init ("OpenSwitch");
+        cli_init ("LinuxRouter");
 
         port_init ();
 
