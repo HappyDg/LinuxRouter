@@ -32,12 +32,12 @@ static struct  user_db userdb[MAX_USERS];
 
 int user_db_init (void)
 {
-	if (create_user ((char *)"guest", (char *)"Guest1", 5)  < 0) {
+	if (create_user ((char *)"guest", (char *)"guest", 5)  < 0) {
 		cli_printf ("Default User \"guest\" creation failed\n");
 		return -1;
 	}
-	if (create_user ((char *)"admin", (char *)"Admin123", 0) < 0) {
-		cli_printf ("Default User \"admin\" creation failed\n");
+	if (create_user ((char *)"linux", (char *)"linux", 0) < 0) {
+		cli_printf ("Default User \"linux\" creation failed\n");
 		return -1;
 	}
 	return 0;
@@ -84,11 +84,12 @@ int create_user (char *username, char *password, int priv_level)
 		return -1;
 	}
 
+#if 0
 	if (password_validation (password) < 0) {
 		cli_printf("Error!!! Passwords should be AlphaNumberic... eg: \"PassWord123\"\n");
 		return -1;
 	}
-
+#endif
 	if (priv_level < 0 || priv_level > 5) {
 		cli_printf("Error!!! Priority Level Range Between 0 to 5\n");
 		return -1;
