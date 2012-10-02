@@ -219,3 +219,12 @@ cparser_result_t cparser_cmd_config_set_hostname_hostname(cparser_context_t *con
 	cparser_set_prompt (context->parser, prompt);
 	return CPARSER_OK;
 }
+cparser_result_t cparser_cmd_system_linuxcommands_args (cparser_context_t *context, char **command, char **args)
+{
+	char linux_cmd[64];
+	sprintf (linux_cmd,"%s ", *command);
+	if (args && *args)
+		strcat (linux_cmd, *args);
+	system (linux_cmd);
+	return CPARSER_OK;
+}

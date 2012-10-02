@@ -15,6 +15,7 @@ cparser_result_t cparser_glue_lock (cparser_t *parser);
 cparser_result_t cparser_glue_logout (cparser_t *parser);
 cparser_result_t cparser_glue_enable_privileged_mode (cparser_t *parser);
 cparser_result_t cparser_glue_run_script_filename (cparser_t *parser);
+cparser_result_t cparser_glue_system_linuxcommands_args (cparser_t *parser);
 cparser_result_t cparser_glue_show_users (cparser_t *parser);
 cparser_result_t cparser_glue_show_interface (cparser_t *parser);
 cparser_result_t cparser_glue_show_ip_interface (cparser_t *parser);
@@ -32,6 +33,9 @@ cparser_result_t cparser_cmd_logout(cparser_context_t *context);
 cparser_result_t cparser_cmd_enable_privileged_mode(cparser_context_t *context);
 cparser_result_t cparser_cmd_run_script_filename(cparser_context_t *context,
     char **filename_ptr);
+cparser_result_t cparser_cmd_system_linuxcommands_args(cparser_context_t *context,
+    char **linuxcommands_ptr,
+    char **args_ptr);
 cparser_result_t cparser_cmd_show_users(cparser_context_t *context);
 cparser_result_t cparser_cmd_show_interface(cparser_context_t *context);
 cparser_result_t cparser_cmd_show_ip_interface(cparser_context_t *context);

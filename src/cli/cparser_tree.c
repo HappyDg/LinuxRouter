@@ -53,6 +53,30 @@ cparser_glue_run_script_filename (cparser_t *parser)
 }
 
 cparser_result_t
+cparser_glue_system_linuxcommands_args (cparser_t *parser)
+{
+    char *linuxcommands_val;
+    char **linuxcommands_ptr = NULL;
+    char *args_val;
+    char **args_ptr = NULL;
+    cparser_result_t rc;
+
+    rc = cparser_get_string(&parser->tokens[1], &linuxcommands_val);
+    assert(CPARSER_OK == rc);
+    linuxcommands_ptr = &linuxcommands_val;
+    rc = cparser_get_string(&parser->tokens[2], &args_val);
+    if (CPARSER_OK == rc) {
+        args_ptr = &args_val;
+    } else {
+        assert(3 > parser->token_tos);
+    }
+    cparser_cmd_system_linuxcommands_args(&parser->context,
+        linuxcommands_ptr,
+        args_ptr);
+    return CPARSER_OK;
+}
+
+cparser_result_t
 cparser_glue_show_users (cparser_t *parser)
 {
     cparser_cmd_show_users(&parser->context);
@@ -462,6 +486,51 @@ cparser_node_t cparser_node_show = {
     &cparser_node_show_users
 };
 
+cparser_node_t cparser_node_system_linuxcommands_args_eol = {
+    CPARSER_NODE_END,
+    0,
+    cparser_glue_system_linuxcommands_args,
+    "Execute Linux commands",
+    NULL,
+    NULL
+};
+
+cparser_node_t cparser_node_system_linuxcommands_args = {
+    CPARSER_NODE_STRING,
+    CPARSER_NODE_FLAGS_OPT_START | CPARSER_NODE_FLAGS_OPT_END,
+    "<STRING:args>",
+    NULL,
+    NULL,
+    &cparser_node_system_linuxcommands_args_eol
+};
+
+cparser_node_t cparser_node_system_linuxcommands_eol = {
+    CPARSER_NODE_END,
+    CPARSER_NODE_FLAGS_OPT_PARTIAL,
+    cparser_glue_system_linuxcommands_args,
+    NULL,
+    &cparser_node_system_linuxcommands_args,
+    NULL
+};
+
+cparser_node_t cparser_node_system_linuxcommands = {
+    CPARSER_NODE_STRING,
+    0,
+    "<STRING:linuxcommands>",
+    NULL,
+    NULL,
+    &cparser_node_system_linuxcommands_eol
+};
+
+cparser_node_t cparser_node_system = {
+    CPARSER_NODE_KEYWORD,
+    0,
+    "system",
+    NULL,
+    &cparser_node_show,
+    &cparser_node_system_linuxcommands
+};
+
 cparser_node_t cparser_node_run_script_filename_eol = {
     CPARSER_NODE_END,
     0,
@@ -485,7 +554,7 @@ cparser_node_t cparser_node_run_script = {
     0,
     "run-script",
     NULL,
-    &cparser_node_show,
+    &cparser_node_system,
     &cparser_node_run_script_filename
 };
 
