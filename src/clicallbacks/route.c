@@ -20,7 +20,7 @@
 static struct sockaddr_nl snl;
 static int sock;
 
-static int rt_sock_create(void)
+int rt_sock_create(void)
 {
 	int ret;
 	unsigned long groups;
@@ -262,7 +262,6 @@ int parse_response(void)
 
 int rtnl_init(void)
 {
-  	rt_sock_create();
 	rt_table_read_req(AF_INET);
 	parse_response();
 	//dump_rt_table();

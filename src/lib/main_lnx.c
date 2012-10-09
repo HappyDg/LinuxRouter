@@ -68,7 +68,7 @@ int main (int argc, char **argv)
 
         port_init ();
 
-
+	rt_sock_create();
         start_cli_task ();
 
 	while (1) {
