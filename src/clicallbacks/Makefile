@@ -1,1 +1,1 @@
-obj-y += if_cli.o ip_cli.o
+obj-y += if_cli.o ip_cli.o route.o

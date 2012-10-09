@@ -43,3 +43,12 @@ cparser_result_t cparser_cmd_show_ip_interface(cparser_context_t *context UNUSED
 	}	
 	return CPARSER_OK;
 }
+
+cparser_result_t cparser_cmd_show_ip_route(cparser_context_t *context)
+{
+ 	rtnl_init(); 		
+}
+
+
+
+

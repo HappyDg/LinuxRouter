@@ -7,5 +7,6 @@ show interface
 //Displays IP Information
 show ip interface
 
+show ip route
 
 

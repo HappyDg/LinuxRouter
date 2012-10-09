@@ -19,6 +19,7 @@ cparser_result_t cparser_glue_system_linuxcommands_args (cparser_t *parser);
 cparser_result_t cparser_glue_show_users (cparser_t *parser);
 cparser_result_t cparser_glue_show_interface (cparser_t *parser);
 cparser_result_t cparser_glue_show_ip_interface (cparser_t *parser);
+cparser_result_t cparser_glue_show_ip_route (cparser_t *parser);
 cparser_result_t cparser_glue_configure_terminal (cparser_t *parser);
 cparser_result_t cparser_glue_config_set_hostname_hostname (cparser_t *parser);
 cparser_result_t cparser_glue_config_user_add_username_password_level (cparser_t *parser);
@@ -39,6 +40,7 @@ cparser_result_t cparser_cmd_system_linuxcommands_args(cparser_context_t *contex
 cparser_result_t cparser_cmd_show_users(cparser_context_t *context);
 cparser_result_t cparser_cmd_show_interface(cparser_context_t *context);
 cparser_result_t cparser_cmd_show_ip_interface(cparser_context_t *context);
+cparser_result_t cparser_cmd_show_ip_route(cparser_context_t *context);
 cparser_result_t cparser_cmd_configure_terminal(cparser_context_t *context);
 cparser_result_t cparser_cmd_config_set_hostname_hostname(cparser_context_t *context,
     char **hostname_ptr);
