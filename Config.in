@@ -14,22 +14,8 @@ choice
 	  - Linux: Run Linux as a router
 	  - Atomthreads: Under Development
 
-config PLATFORM_SIM_LINUX
-	bool "Linux simulation"
-
-config SIM_VIRTUAL_LINK_MGR
-	bool "Virtual link mgr"
-	default y
-	depends on PLATFORM_SIM_LINUX
-	help
-	  Compiles virtual link manager.
-
 config PLATFORM_LINUX
 	bool "Linux"
-
-config PLATFORM_ATOMTHREADS
-	bool "Atomthreads"
-
 endchoice
 
 menu 'Layer 2 Config'
@@ -47,44 +33,12 @@ config STP
 	help
 	   Say Y here if you want STP to be enabled
 
-config RSTP
-	bool "Enable Rapid Spanning Tree"
-	default y
-	help
-	   Say Y here if you want RSTP to be enabled
-
 config LINUX_STP
 	bool "Enable Linux Spanning Tree"
 	default y
 	depends on PLATFORM_LINUX
 	help
 	   Say Y here if you want Linux STP to be enabled
-
-endmenu
-
-menu 'Layer 3 Config'
-
-config ZEBRA_RTM
-	bool "Zebra RTM"
-	default y
-	help
-	  Enables Zebra RTM
-endmenu
-
-menu 'TCP/IP Layer'
-choice
-	prompt "TCP/IP "
-	default OPENSWITCH_TCP_IP
-	help
-	  There are 2 types
-	  - OPEN Switch TCPIP : It is a clone/copy of LWIP
-	  - OS TCP/IP : Not Supoorted
-
-config OPENSWITCH_TCP_IP
-	bool "Open Switch TCP/IP (LWIP)"
-config OS_TCP_IP
-	bool "Operating System  TCP/IP stack"
-endchoice
 
 endmenu
 
