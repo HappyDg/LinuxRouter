@@ -20,6 +20,8 @@ end
 //Exit from the current mode
 exit
 
+#include "src/clicmds/stp.cli"
+
 
 #endsubmode
 

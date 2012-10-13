@@ -9,4 +9,5 @@ show ip interface
 
 show ip route
 
-
+//Show spanning-tree
+show spanning-tree

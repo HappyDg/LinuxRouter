@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "stp_info.h"
 #include "cli.h"
 #include "cparser.h"
@@ -16,6 +17,11 @@ struct stp_instance * get_this_bridge_entry (uint16_t vlan_id);
 
 extern struct list_head stp_instance_head;
 
+
+int stp_set_bridge_times (int fdly, int maxage, int htime, uint16_t vlan_id)
+{
+}
+
 cparser_result_t cparser_cmd_show_spanning_tree(cparser_context_t *context UNUSED_PARAM)
 {
 	if (!show_spanning_tree ())
@@ -30,16 +36,14 @@ cparser_result_t cparser_cmd_config_spanning_tree(cparser_context_t *context UNU
 }
 cparser_result_t cparser_cmd_config_spanning_tree_priority_priority(cparser_context_t *context UNUSED_PARAM, int32_t *priority_ptr)
 {
-	if (!stp_set_bridge_priority (*priority_ptr, cli_get_vlan_id ()))
-		return CPARSER_OK;
 	return CPARSER_NOT_OK;
 }
 
 cparser_result_t cparser_cmd_config_no_spanning_tree_priority_priority(cparser_context_t *context UNUSED_PARAM, int32_t *priority_ptr)
 {
 	*priority_ptr = STP_DEF_PRIORITY;
-	if (!stp_set_bridge_priority (*priority_ptr, cli_get_vlan_id ()))
-		return CPARSER_OK;
+//	if (!stp_set_bridge_priority (*priority_ptr, cli_get_vlan_id ()))
+//		return CPARSER_OK;
 	return CPARSER_NOT_OK;
 }
 
@@ -51,8 +55,8 @@ cparser_result_t cparser_cmd_config_spanning_tree_hello_time_htimesecs_forward_d
 {
 	if (!fdlysecs_ptr && !maxagesecs_ptr) 
 	{
-		if (!stp_set_bridge_hello_time (*htimesecs_ptr, cli_get_vlan_id ()))
-			return CPARSER_OK;
+	//	if (!stp_set_bridge_hello_time (*htimesecs_ptr, cli_get_vlan_id ()))
+	//		return CPARSER_OK;
 		return CPARSER_NOT_OK;
 	}
 
@@ -93,8 +97,8 @@ cparser_result_t cparser_cmd_config_spanning_tree_forward_delay_fdlysecs_max_age
 {
 	if (!htimesecs_ptr && !maxagesecs_ptr) 
 	{
-		if (!stp_set_bridge_forward_delay (*fdlysecs_ptr, cli_get_vlan_id ()))
-			return CPARSER_OK;
+	//	if (!stp_set_bridge_forward_delay (*fdlysecs_ptr, cli_get_vlan_id ()))
+	//		return CPARSER_OK;
 		return CPARSER_NOT_OK;
 	}
 
@@ -136,8 +140,8 @@ cparser_result_t cparser_cmd_config_spanning_tree_max_age_maxagesecs_forward_del
 {
         if (!fdlysecs_ptr && !htimesecs_ptr)
         {
-                if (!stp_set_bridge_max_age (*maxagesecs_ptr, cli_get_vlan_id ()))
-                        return CPARSER_OK;
+          //      if (!stp_set_bridge_max_age (*maxagesecs_ptr, cli_get_vlan_id ()))
+            //            return CPARSER_OK;
                 return CPARSER_NOT_OK;
         }
 
@@ -173,16 +177,12 @@ cparser_result_t cparser_cmd_config_spanning_tree_ethernet_portnum_path_cost_cos
     int32_t *portnum_ptr,
     int32_t *cost_ptr)
 {
-	if (!set_spanning_bridge_port_path_cost (*cost_ptr, *portnum_ptr))
-		return CPARSER_OK;
 	return CPARSER_NOT_OK;
 }
 cparser_result_t cparser_cmd_config_spanning_tree_ethernet_portnum_priority_priority(cparser_context_t *context UNUSED_PARAM,
     int32_t *portnum_ptr,
     int32_t *priority_ptr)
 {
-	if (!set_spanning_bridge_port_prio (*priority_ptr, *portnum_ptr))
-		return CPARSER_OK;
 	return CPARSER_NOT_OK;
 }
 cparser_result_t cparser_cmd_config_no_spanning_tree(cparser_context_t *context UNUSED_PARAM)
@@ -196,6 +196,7 @@ int  show_spanning_tree  (void)
 {
 	struct stp_instance *pstp_inst = NULL;
 
+#if 0
 	list_for_each_entry(pstp_inst, &stp_instance_head, next) {
 
 		if (pstp_inst->stp_enabled) {
@@ -256,19 +257,19 @@ int  show_spanning_tree  (void)
 			cli_printf (" VLAN  : %d\n\n", pstp_inst->vlan_id);
 		}
 	}
+#endif
 	return 0;
 }
 
 int spanning_tree_enable (void)
 {
-	return vlan_spanning_tree_enable_on_vlan (cli_get_vlan_id (), MODE_STP);
 }
 int spanning_tree_disable (void)
 {
-	return vlan_spanning_tree_disable_on_vlan (cli_get_vlan_id (), MODE_STP);
 }
 int set_spanning_bridge_port_path_cost (uint32_t path_cost, uint32_t portnum)
 {
+#if 0
 	struct stp_instance *br = get_this_bridge_entry (cli_get_vlan_id ());
 	struct stp_port_entry *p = NULL;
 
@@ -283,7 +284,7 @@ int set_spanning_bridge_port_path_cost (uint32_t path_cost, uint32_t portnum)
 		cli_printf ("Invalid Port Number\n");
 		return -1;
 	}
-
+#endif
 	if (path_cost < STP_MIN_PATH_COST || path_cost > STP_MAX_PATH_COST)
 	{
 		cli_printf ("Invaild spanning tree port path-cost. Valid range %d-%d\n", 
@@ -291,13 +292,12 @@ int set_spanning_bridge_port_path_cost (uint32_t path_cost, uint32_t portnum)
 		return -1;
 	}
 
-	stp_set_path_cost (p, path_cost);
-
 	return 0;
 }
 
 int set_spanning_bridge_port_prio (uint32_t prio, uint32_t portnum)
 {
+#if 0
 	struct stp_instance *br = get_this_bridge_entry (cli_get_vlan_id ());
 	struct stp_port_entry *p = NULL;
 
@@ -312,14 +312,14 @@ int set_spanning_bridge_port_prio (uint32_t prio, uint32_t portnum)
 		cli_printf ("Invalid Port Number\n");
 		return -1;
 	}
-
+#endif
 	if (prio > STP_MAX_PORT_PRIORITY)
 	{
 		cli_printf ("Invaild spanning tree port priority. Valid Range 0-240\n");
 		return -1;
 	}
 
-	stp_set_port_priority (p, prio);
+//	stp_set_port_priority (p, prio);
 
 	return 0;
 }
