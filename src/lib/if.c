@@ -36,6 +36,7 @@ int set_ip_address (uint32_t ifindex, uint32_t ipaddress, uint32_t ipmask);
 int fetch_and_update_if_info (if_t *ife);
 int route_add_if (unsigned char *ipaddr, unsigned char masklen, if_t *netif);
 int read_interfaces (void);
+int get_max_port (void);
 void update_linux_if_map (int port, int ifindex);
 int make_if_down (if_t *p);
 int make_if_up (if_t *p);
@@ -81,9 +82,10 @@ static int new_port_init (int id)
 }
 
 
+#if 0
 static int create_raw_sock (char *name)
 {
-	int sd = -1;
+	long sd = -1;
         struct ifreq ifr;
 	struct sockaddr_ll addr;
 	int  fd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -116,7 +118,7 @@ static int create_raw_sock (char *name)
 
 	return 0;
 }
-
+#endif
 static if_t *add_if_info(char *name)
 {
     new_port_init (idx);

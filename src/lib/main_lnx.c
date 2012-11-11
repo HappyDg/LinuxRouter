@@ -34,6 +34,14 @@ void update_linux_if_map (int port, int ifindex);
 int create_raw_sock_for_pkt_capture (void);
 void layer3switch_init (void);
 int spawn_pkt_processing_task (void);
+int mcore_init (void);
+int br_init (void);
+int lib_init (void);
+int mem_init (void);
+int rt_sock_create (void);
+int start_cli_task (void);
+int cli_init (const char *);
+int port_init (void);
 
 char switch_mac[6] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05};
 
@@ -54,10 +62,8 @@ void execute_system_call (char *arg)
 	system (arg);
 }
 
-
-int main (int argc, char **argv)
+int main (int argc UNUSED_PARAM, char **argv UNUSED_PARAM)
 {
-
 	mcore_init ();
 
         lib_init ();
@@ -92,7 +98,6 @@ int read_port_mac_address (int port, uint8_t *p)
 
 int spawn_pkt_processing_task (void)
 {
-	int ifport = 0;
 	tmtaskid_t  taskid = 0;
 	char task_name[16];
 
@@ -131,6 +136,7 @@ void update_linux_if_map (int port, int ifindex)
 {
 	linux_if_map[port].linux_ifIndex = ifindex;
 }
+#if 0
 void send_packet (void *buf, uint16_t port, int len)
 {
 #if 1
@@ -152,3 +158,4 @@ void send_packet (void *buf, uint16_t port, int len)
 #endif
 	return;
 }
+#endif

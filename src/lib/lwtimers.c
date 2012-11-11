@@ -311,7 +311,7 @@ void * tick_clock (void *unused)
 {
 	register clock_t    start, end;
 	register int        tick = 0;
-	int                 cpu = (int) unused;
+	long                 cpu = (long) unused;
 	
 	cpu_bind (cpu);
 
@@ -342,13 +342,13 @@ int init_timer_mgr (void)
 {
 	tmtaskid_t task_id = 0;
 	long      max_cpus = get_max_cpus ();
-	int       i = 0;
+	long       i = 0;
 
 	tmr_mgr = tm_malloc (sizeof (struct timer_mgr) * max_cpus);
 
 	while (i < max_cpus) {
 		char task_name[8];
-		sprintf (task_name, "TMR-%d", i);
+		sprintf (task_name, "TMR-%ld", i);
 		if (task_create (task_name, 99, TSK_SCHED_RR, 32000,
 				tick_clock, NULL, (void *)i, &task_id) == TSK_FAILURE) {
 			return FAILURE;

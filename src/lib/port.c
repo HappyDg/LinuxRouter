@@ -18,9 +18,8 @@ int port_init (void)
 	return 0;
 }
 
-void send_interface_enable_or_disable (int port , int state)
+void send_interface_enable_or_disable (int port UNUSED_PARAM, int state UNUSED_PARAM)
 {
-	int vlanid = 1;
 }
 
 int get_port_oper_state (uint32_t port)
