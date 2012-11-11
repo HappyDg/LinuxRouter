@@ -316,7 +316,7 @@ static int br_cmd_showstp(int argc, char *const* argv)
 	return 0;
 }
 
-static int show_bridge(const char *name, void *arg)
+int show_bridge(const char *name, void *arg)
 {
 	struct bridge_info info;
 

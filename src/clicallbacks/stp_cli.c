@@ -239,6 +239,8 @@ int  show_spanning_tree  (void)
 {
 	struct stp_instance *pstp_inst = NULL;
 
+	show_bridge (STP_DEFAULT_INSTANCE, NULL);
+
 #if 0
 	list_for_each_entry(pstp_inst, &stp_instance_head, next) {
 
