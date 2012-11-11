@@ -1,12 +1,19 @@
 #include <stdio.h>
+#include <netinet/in.h>
+#include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <sys/types.h>          /* See NOTES */
+#include <sys/socket.h>
+#include <linux/if.h>
 #include "stp_info.h"
 #include "cli.h"
 #include "cparser.h"
 #include "cparser_tree.h"
 
+
 /******************************************************/
-int spanning_tree_enable (void);
-int spanning_tree_disable (void);
+int spanning_tree_enable (char *);
+int spanning_tree_disable (char *);
 int set_spanning_bridge_port_path_cost (uint32_t path_cost, uint32_t portnum);
 int set_spanning_bridge_port_prio (uint32_t prio, uint32_t portnum);
 int  show_spanning_tree  (void);
@@ -17,6 +24,46 @@ struct stp_instance * get_this_bridge_entry (uint16_t vlan_id);
 
 extern struct list_head stp_instance_head;
 
+#define STP_DEFAULT_INSTANCE "linux_stp"
+
+static int add_interfaces_to_bridge (char *br)
+{
+	int numreqs = 30;
+	struct ifconf ifc;
+	struct ifreq *ifr;
+	int n, err = -1;
+	int   skfd      = socket(AF_INET, SOCK_DGRAM, 0);
+
+	if (skfd < 0)
+		return (-1);
+
+	ifc.ifc_buf = NULL;
+	for (;;) {
+		ifc.ifc_len = sizeof(struct ifreq) * numreqs;
+		ifc.ifc_buf = realloc(ifc.ifc_buf, ifc.ifc_len);
+
+		if (ioctl(skfd, SIOCGIFCONF, &ifc) < 0) {
+			perror("SIOCGIFCONF");
+			goto out;
+		}
+		if (ifc.ifc_len == (int)(sizeof(struct ifreq) * numreqs)) {
+			/* assume it overflowed and try again */
+			numreqs += 10;
+			continue;
+		}
+		break;
+	}
+
+	ifr = ifc.ifc_req;
+	for (n = 0; n < ifc.ifc_len; n += sizeof(struct ifreq), ifr++) {
+		br_add_interface (br, ifr->ifr_name);
+	}
+	err = 0;
+
+out:
+	free(ifc.ifc_buf);
+	return err;
+}
 
 int stp_set_bridge_times (int fdly, int maxage, int htime, uint16_t vlan_id)
 {
@@ -30,9 +77,7 @@ cparser_result_t cparser_cmd_show_spanning_tree(cparser_context_t *context UNUSE
 }
 cparser_result_t cparser_cmd_config_spanning_tree(cparser_context_t *context UNUSED_PARAM)
 {
-	if (!spanning_tree_enable ())
-		return CPARSER_OK;
-	return CPARSER_NOT_OK;
+	return spanning_tree_enable (STP_DEFAULT_INSTANCE);
 }
 cparser_result_t cparser_cmd_config_spanning_tree_priority_priority(cparser_context_t *context UNUSED_PARAM, int32_t *priority_ptr)
 {
@@ -187,9 +232,7 @@ cparser_result_t cparser_cmd_config_spanning_tree_ethernet_portnum_priority_prio
 }
 cparser_result_t cparser_cmd_config_no_spanning_tree(cparser_context_t *context UNUSED_PARAM)
 {
-	if (!spanning_tree_disable ())
-		return CPARSER_OK;
-	return CPARSER_NOT_OK;
+	return spanning_tree_disable (STP_DEFAULT_INSTANCE);
 }
 
 int  show_spanning_tree  (void)
@@ -261,11 +304,19 @@ int  show_spanning_tree  (void)
 	return 0;
 }
 
-int spanning_tree_enable (void)
+int spanning_tree_enable (char *br_name)
 {
+	if (br_add_bridge (br_name))
+		return CPARSER_NOT_OK;
+	br_set_stp_state (br_name, 1);
+	add_interfaces_to_bridge (br_name);
+	return CPARSER_OK;
 }
-int spanning_tree_disable (void)
+int spanning_tree_disable (char *br_name)
 {
+	if (br_del_bridge (br_name))
+		return CPARSER_NOT_OK;
+	return CPARSER_OK;
 }
 int set_spanning_bridge_port_path_cost (uint32_t path_cost, uint32_t portnum)
 {
@@ -323,3 +374,5 @@ int set_spanning_bridge_port_prio (uint32_t prio, uint32_t portnum)
 
 	return 0;
 }
+
+
