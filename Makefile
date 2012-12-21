@@ -303,7 +303,7 @@ DEPMOD		= /sbin/depmod
 KALLSYMS	= scripts/kallsyms
 PERL		= perl
 CHECK		= sparse
-INCLUDE         = -I$(srctree)/src/inc  -I$(srctree)/src/lib  -I$(srctree)/src/cli/ -I$(srctree)/src/platform/inc/linux/ -I$(srctree)/src/inc/ipv4 -I$(srctree)/src/inc/ipv6
+INCLUDE         = -I$(srctree)/src/userspace/inc  -I$(srctree)/src/userspace/lib  -I$(srctree)/src/userspace/cli/ -I$(srctree)/src/userspace/platform/inc/linux/ -I$(srctree)/src/userspace/inc/ipv4 -I$(srctree)/src/userspace/inc/ipv6
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ -Wbitwise $(CF)
 MODFLAGS	= -DMODULE
@@ -1225,7 +1225,7 @@ kernelversion:
 	@echo $(KERNELVERSION)
 PARSE_TREE:
 	echo "Generate CLI Commands"
-	scripts/mk_parser.py -o src/userspac/cli/ src/userspace/clicmds/cmd.cli
+	scripts/mk_parser.py -o src/userspace/cli/ src/userspace/clicmds/cmd.cli
 
 # Single targets
 # ---------------------------------------------------------------------------
