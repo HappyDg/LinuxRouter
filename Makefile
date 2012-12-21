@@ -1225,7 +1225,7 @@ kernelversion:
 	@echo $(KERNELVERSION)
 PARSE_TREE:
 	echo "Generate CLI Commands"
-	scripts/mk_parser.py -o src/cli/ src/clicmds/cmd.cli
+	scripts/mk_parser.py -o src/userspac/cli/ src/userspace/clicmds/cmd.cli
 
 # Single targets
 # ---------------------------------------------------------------------------

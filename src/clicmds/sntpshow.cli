@@ -1,9 +1,0 @@
-//Display NTP associations
-show ntp associations
-
-//Display Clock Details
-show clock
-
-//Display NTP status
-show ntp status
-

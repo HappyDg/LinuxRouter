@@ -1,0 +1,13 @@
+//Displays user info
+show users
+
+//Displays interface
+show interface
+
+//Displays IP Information
+show ip interface
+
+show ip route
+
+//Show spanning-tree
+show spanning-tree

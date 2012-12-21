@@ -1,0 +1,33 @@
+#include "src/userspace/clicmds/gen.cli"
+#include "src/userspace/clicmds/showcmds.cli"
+//configuration mode
+configure terminal
+
+#submode "config"
+
+//Sets hostname
+set hostname <STRING:hostname>
+
+//Add new user 
+user add <STRING:username> <STRING:password> <INT:level>
+
+//Deletes user
+user del <STRING:username>
+
+//Changes to the exec mode
+end
+
+//Exit from the current mode
+exit
+
+#include "src/userspace/clicmds/stp.cli"
+
+
+#endsubmode
+
+//Changes to the exec mode
+end
+
+//Exit from the current mode
+exit
+
